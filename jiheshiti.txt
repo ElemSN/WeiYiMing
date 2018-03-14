@@ -1,0 +1,107 @@
+概念题：
+1。fail-fast和fail-safe迭代器有什么区别？
+Fail-fast在集合遍历过程中若集合被修改，则会报错，但fail-safe则不会，因为fail-fast是直接改变集合，而fail-safe则是复制一份集合之后在复制的集合上改动。
+2。如何使用??Comparable??和??Comparator??接口对集合进行排序？
+Comparable使用时需要在继承Comparable接口并重写compareTo方法，再以集合为参数调用sort方法即可排序；Comparator使用时需单独定义一个类继承Comparator接口并实现compare方法，再调用sort方法排序
+3.HashSet和TreeSet有什么区别？
+HashSet无序，TreeSet有序；其中TreeSet底层存储结构为红黑树，因而其有排序功能。
+?
+
+4.解释LinkedList和ArrayList之间的区别。
+Linkedlist底层存储结构为链表，ArrayList底层存储结构为数组；因而LinkedLisit更容易进行增添和删除元素，而对于查询和遍历则效率低下，ArrayList便于查询和遍历，对于增添和删除元素效率低下
+8.哪些集合类是线程安全的？
+
+Vector、HashTable、Properties和Stack是同步类，所以它们是线程安全的，可以在多线程环境下使用。Java1.5并发API包括一些集合类，允许迭代时修改，因为它们都工作在集合的克隆上，所以它们在多线程环境中是安全的。
+
+9.并发集合类是什么？
+
+
+10.数组(Array)和列表集合(ArrayList)有什么区别
+二者均为底层存储结构均为数组，但是Array类型无法改变大小，效率高，ArrayList可以改变大小，可扩容，效率低。
+11.Enumeration接口和Iterator接口的区别有哪些
+Enumeration效率高，但不是线程安全，Iterator效率低，但线程安全，二者均可遍历和查找集合元素，但只有Iterator可以删除元素
+?
+
+
+阅读代码题：
+1.（List）写出下面程序的运行结果
+import?java.util.*;
+public?class?TestList{
+public?static?void?main(String?args[]){
+List?list?=?new?ArrayList();
+list.add(“Hello”);
+list.add(“World”);
+list.add(“Hello”);
+list.add(“Learn”);
+list.remove(“Hello”);
+list.remove(0);
+for(int?i?=?0;?i<list.size();?i++){
+System.out.println(list.get(i));
+}
+}
+}
+结果是：
+Hello
+Learn
+//因为List集合类型允许元素重复，所以list内原有两个Hello，删去第一个后第一个元素变为World，再删去第一个元素，最后输出Hello Learn
+2.?（Set，List）
+import?java.util.*;
+public?class?TestListSet{
+public?static?void?main(String?args[]){
+List?list?=?new?ArrayList();
+list.add(“Hello”);
+list.add(“Learn”);
+list.add(“Hello”);
+list.add(“Welcome”);
+Set?set?=?new?HashSet();
+set.addAll(list);
+System.out.println(set.size());
+}
+}
+选择正确答案
+A．?编译不通过
+B．?编译通过，运行时异常
+C．?编译运行都正常，输出3
+D．?编译运行都正常，输出4
+结果：C
+//List类型允许元素重复，HashSet类型不允许元素重复，故list内的两个Hello仅有一个传到了set内，故set的size为3
+三、编程题
+1.集合实现约瑟夫环。
+import java.util.ArrayList;  
+import java.util.List;  
+import java.util.Scanner;  
+  
+public class TestList {  
+    public static void main(String[] args) {  
+        Scanner scanner = new Scanner(System.in);  
+        System.out.print("请输入总人数：");  
+        int totalNum = scanner.nextInt();  
+        System.out.print("请输入报数的大小：");  
+        int cycleNum = scanner.nextInt();  
+        yuesefu(totalNum, cycleNum);  
+    }  
+  
+   public static void yuesefu(int totalNum, int countNum) {  
+        // 初始化人数  
+        List start = new ArrayList();  
+        for (int i = 1; i <= totalNum; i++) {  
+            start.add(i);  
+        }  
+        //从第K个开始计数  
+        int k = 0;  
+        while (start.size() >0) {  
+            k = k + countNum;  
+            //第m人的索引位置  
+            k = k % (start.size()) - 1;  
+           // 判断是否到队尾  
+            if (k < 0) {  
+                System.out.println(start.get(start.size()-1));  
+                start.remove(start.size() - 1);  
+                k = 0;  
+            } else {  
+                System.out.println(start.get(k));  
+                start.remove(k);  
+            }  
+        }  
+    }  
+}
